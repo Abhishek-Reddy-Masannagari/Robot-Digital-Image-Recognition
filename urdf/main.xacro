@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot
+  name="robot_image_recognition"
+  xmlns:xacro="https://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find robot_image_recognition)/urdf/robot_image_recognition.urdf" />
+    <xacro:include filename="$(find robot_image_recognition)/urdf/controller.urdf" />
+
+</robot>

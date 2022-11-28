@@ -1,0 +1,34 @@
+<launch>
+  <param
+    name="robot_description"
+    command="xacro --inorder '$(find robot_image_recognition)/urdf/main.xacro'" />
+  <rosparam file="$(find robot_image_recognition)/config/control.yaml" command="load" />
+  <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="robot_image_recognition" args="X_Axis_Joint_position_controller X_Axis_Joint_state_controller Y_Axis_Joint_position_controller Y_Axis_Joint_state_controller Z_Axis_Joint_position_controller Z_Axis_Joint_state_controller
+    Gripper_Rot_Plate_Joint_position_controller Gripper_Rot_Plate_Joint_state_controller Glue_Cartridge_Flap_Joint_position_controller Glue_Cartridge_Flap_Joint_state_controller Glue_Cartridge_Joint_position_controller Glue_Cartridge_Joint_state_controller EQ_Joint_position_controller EQ_Joint_state_controller Gonio_Right_Stage_1_Upper_joint_position_controller Gonio_Right_Stage_1_Upper_joint_state_controller
+    Gonio_Right_Stage_2_Upper_Joint_position_controller Gonio_Right_Stage_2_Upper_Joint_state_controller Camera_Calibartion_Joint_position_controller Camera_Calibartion_Joint_state_controller Gonio_Left_Stage_1_Upper_Joint_position_controller Gonio_Left_Stage_1_Upper_Joint_state_controller Gonio_Left_Stage_2_Upper_Joint_position_controller 
+    Gonio_Left_Stage_2_Upper_Joint_state_controller UV_Cart_Left_Joint_position_controller UV_Cart_Left_Joint_state_controller UV_Module_Left_Joint_position_controller UV_Module_Left_Joint_state_controller UV_Cart_Right_Joint_position_controller UV_Cart_Right_Joint_state_controller UV_Module_Right_Joint_position_controller
+    UV_Module_Right_Joint_state_controller" />
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/robot_image_recognition/joint_states" />
+  </node> -->
+
+  <include
+    file="$(find gazebo_ros)/launch/empty_world.launch" />
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-urdf -model robot_image_recognition -param robot_description" />
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+</launch>
